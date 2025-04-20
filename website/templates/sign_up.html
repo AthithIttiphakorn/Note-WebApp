@@ -1,0 +1,59 @@
+<!--Jinja Templating!-->
+<!--say that base.html is the template for this page-->
+{% extends "base.html" %}
+
+<!-- override block (jinja formatting) in template-->
+ <!-- title is merely the name of the block, an identifier-->
+{% block title%} sign up {% endblock %}
+
+{% block content %}
+<h1>This is the signup page</h1>
+<form method="POST">
+    <h3 align="center">Sign up</h3>
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"      
+          placeholder="Enter email"
+        />
+        <!-- information passed in name value to backend - in this case, "email".-->
+      </div>
+
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="firstName"
+          name="firstName"
+          placeholder="Enter first name"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password1">Password</label>
+        <input
+        type="password"
+        class="form-control"
+        id="password1"
+        name="password1"
+        placeholder="Enter password"
+        />
+    </div>
+    <div class="form-group">
+        <label for="password2">Password (Confirm)</label>
+        <input
+        type="password"
+        class="form-control"
+        id="password2"
+        name="password2"
+        placeholder="Confirm password"
+        />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
