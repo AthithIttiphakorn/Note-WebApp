@@ -4,6 +4,11 @@ from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db   ##means from __init__.py import db
 from flask_login import login_user, login_required, logout_user, current_user
+
+import smtplib
+import os
+
+
 #A blueprint for the project
 #Blueprint define that this file has many URLS and Routes defined in it
 #seperation is more easy - more organized
@@ -70,6 +75,19 @@ def sign_up():
             db.session.add(new_user)
             db.session.commit()
             flash('Account created successfully!', category='success')
+
+            #maybe migrate into a new seperate function so that it is reusable (if necessary) - North.
+            smtp_object = smtplib.SMTP('smtp.gmail.com', 587)
+
+            smtp_object.ehlo()
+            smtp_object.starttls()
+            smtp_object.login( os.getenv("EMAIL"), os.getenv("APPWS"))
+
+            subject = f"Hi, {first_name}!"
+            msg = "Subject: " + subject + '\n' + "Thank you for trying out my website! :)"
+            smtp_object.sendmail(os.getenv("EMAIL"), email, msg)
+            smtp_object.quit()
+
             return redirect(url_for('views.home'))
             
     return render_template("sign_up.html", user=current_user)
