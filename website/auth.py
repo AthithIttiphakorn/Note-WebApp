@@ -31,7 +31,7 @@ def login():
         if user:  #if the user is in the database (already registered)
             if check_password_hash(user.password, password): #compare hashes to see if password is correct
                 flash('Logged in Successfully!', category='success')
-                login_user(user, remember=True) #remember stores users session. Will login automatically.
+                login_user(user) #remember=True stores users session. Will login automatically.
                 return redirect(url_for('views.home'))
             else: 
                 flash('Incorrect password, try again.')
@@ -85,11 +85,12 @@ def sign_up():
             smtp_object.login( os.getenv("EMAIL"), os.getenv("APPWS"))
 
             subject = f"Hi, {first_name}!"
-            msg = "Subject: " + subject + '\n' + "Thank you for trying out my website! :)"
+            message = "Thank you for trying out my website! :) You can give me feedback by replying to this email."
+            msg = "Subject: " + subject + '\n' + message
             smtp_object.sendmail(os.getenv("EMAIL"), email, msg)
             smtp_object.quit()
 
-            login_user(new_user, remember=True)
+            login_user(new_user)
 
             return redirect(url_for('views.home'))
             
