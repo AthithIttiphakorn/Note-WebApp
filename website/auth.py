@@ -59,6 +59,7 @@ def sign_up():
         user = User.query.filter_by(email=email).first()
         if user:
             flash('Email already exists, use another one.', category="error")
+            error = True
 
         if password1 != password2:
             flash('Passwords are not the same!', category='error')
@@ -87,6 +88,8 @@ def sign_up():
             msg = "Subject: " + subject + '\n' + "Thank you for trying out my website! :)"
             smtp_object.sendmail(os.getenv("EMAIL"), email, msg)
             smtp_object.quit()
+
+            login_user(user, remember=True)
 
             return redirect(url_for('views.home'))
             
