@@ -22,18 +22,24 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST']) #define homepage 
 @views.route('/home')
 def home():
-    if request.method == 'POST':
-        note = request.form.get('note')
 
-        if len(note) < 1:
-            flash('Note is too short!', category='error')
-        else:
-            new_note = Note(data=note, user_id=current_user.id)
-            db.session.add(new_note)
-            db.session.commit()
-            flash('Note added', category='success')
+    if current_user.is_authenticated:
+        if request.method == 'POST':
+            note = request.form.get('note')
 
-    return render_template("home.html", user=current_user)
+            if len(note) < 1:
+                flash('Note is too short!', category='error')
+            else:
+                new_note = Note(data=note, user_id=current_user.id)
+                db.session.add(new_note)
+                db.session.commit()
+                flash('Note added', category='success')
+
+        return render_template("home.html", user=current_user)
+    
+    else:
+        flash("You have not logged in yet!", category="error")
+        return render_template("login.html")
 
 
 @views.route('/delete-note', methods=['POST'])
