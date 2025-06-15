@@ -89,7 +89,7 @@ def sign_up():
             smtp_object.sendmail(os.getenv("EMAIL"), email, msg)
             smtp_object.quit()
 
-            login_user(user, remember=True)
+            login_user(new_user, remember=True)
 
             return redirect(url_for('views.home'))
             
